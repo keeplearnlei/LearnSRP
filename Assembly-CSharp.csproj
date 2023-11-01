@@ -58,9 +58,13 @@
     <Analyzer Include="D:\Program Files\Unity\Hub\Editor\2022.3.10f1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CustomRP\Runtime\CameraRendererEditor.cs" />
     <Compile Include="Assets\CustomRP\Runtime\CameraRenderer.cs" />
     <Compile Include="Assets\CustomRP\Runtime\CustomRenderPipeline.cs" />
     <Compile Include="Assets\CustomRP\Runtime\CustomRenderPipelineAsset.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\GameRes\Shaders\NewUnlitShader.shader" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
