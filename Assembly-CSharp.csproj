@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="Assets\CustomRP\Runtime\CameraRendererEditor.cs" />
     <Compile Include="Assets\CustomRP\Examples\PerObjectMaterialProperties.cs" />
+    <Compile Include="Assets\CustomRP\Examples\CreateInstancingBall.cs" />
     <Compile Include="Assets\CustomRP\Runtime\CameraRenderer.cs" />
     <Compile Include="Assets\CustomRP\Runtime\CustomRenderPipeline.cs" />
     <Compile Include="Assets\CustomRP\Runtime\CustomRenderPipelineAsset.cs" />
@@ -68,8 +69,8 @@
     <None Include="Assets\GameRes\Shaders\Unlit_SRPBatcher.shader" />
     <None Include="Assets\GameRes\Shaders\ShaderLibrarys\UnityInput.hlsl" />
     <None Include="Assets\GameRes\Shaders\Unlit_GPUInstancing.shader" />
-    <None Include="Assets\GameRes\Shaders\NewUnlitShader.shader" />
     <None Include="Assets\GameRes\Shaders\ShaderLibrarys\Common.hlsl" />
+    <None Include="Assets\GameRes\Shaders\UnlitPass_GPUInstancing.hlsl" />
     <None Include="Assets\GameRes\Shaders\UnlitPass_SRPBatcher.hlsl" />
   </ItemGroup>
   <ItemGroup>

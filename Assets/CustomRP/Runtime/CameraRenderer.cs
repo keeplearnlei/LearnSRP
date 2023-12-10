@@ -13,7 +13,7 @@ public partial class CameraRenderer
     private CullingResults m_cullingResults;
     private Camera m_camera = null;
 
-    public void Render(ScriptableRenderContext context, Camera camera)
+    public void Render(ScriptableRenderContext context, Camera camera, bool useDynamicBatching, bool useGPUInstancing)
     {
         m_context = context;
         m_camera = camera;
@@ -28,7 +28,7 @@ public partial class CameraRenderer
 
         SetUp();
         
-        DrawVisibleGeometry();
+        DrawVisibleGeometry(useDynamicBatching, useGPUInstancing);
 #if UNITY_EDITOR
         DrawUnsupportedShaders();
         DrawGizmos();
@@ -61,7 +61,7 @@ public partial class CameraRenderer
         ExecuteBuffer();
     }
 
-    private void DrawVisibleGeometry()
+    private void DrawVisibleGeometry(bool useDynamicBatching, bool useGPUInstancing)
     {
         // 设置渲染排序规则为不透明对象排序，开始渲染不透明物体。
         SortingSettings sortingSettings = new SortingSettings()
@@ -69,7 +69,12 @@ public partial class CameraRenderer
             criteria = SortingCriteria.CommonOpaque,
         };
         // 设置渲染的shader pass和渲染排序规则
-        DrawingSettings drawingSettings = new DrawingSettings(s_unlitShaderTag, sortingSettings);
+        DrawingSettings drawingSettings = new DrawingSettings(s_unlitShaderTag, sortingSettings) 
+        {
+            enableDynamicBatching = useDynamicBatching,
+            enableInstancing = useGPUInstancing,
+        };
+
         // 渲染对象的过滤设置
         FilteringSettings filteringSettings = new FilteringSettings(RenderQueueRange.opaque);
         // 渲染不透明物体
