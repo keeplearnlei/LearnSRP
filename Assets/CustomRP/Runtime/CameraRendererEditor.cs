@@ -1,5 +1,7 @@
 using System;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.Profiling;
 using UnityEngine.Rendering;
 
 #if UNITY_EDITOR
@@ -16,6 +18,22 @@ public partial class CameraRenderer
 
     private Material m_errorMaterial = null;
 
+    public void PrepareBuffer()
+    {
+        Profiler.BeginSample("EditorOnly");
+        m_buffer.name = m_camera.name;
+        Profiler.EndSample();
+    }
+
+    // 解决UI无法在Scene视图绘制的问题
+    private void PrepareForSceneWindow()
+    {
+        if (m_camera.cameraType == CameraType.SceneView)
+        {
+            ScriptableRenderContext.EmitWorldGeometryForSceneView(m_camera);
+        }
+    }
+
     private void DrawUnsupportedShaders()
     {
         if (m_errorMaterial == null)
@@ -31,6 +49,15 @@ public partial class CameraRenderer
         FilteringSettings filteringSettings = FilteringSettings.defaultValue;
         // 渲染不支持的Geometry
         m_context.DrawRenderers(m_cullingResults, ref drawingSettings, ref filteringSettings);
+    }
+
+    private void DrawGizmos()
+    {
+        if (Handles.ShouldRenderGizmos())
+        {
+            m_context.DrawGizmos(m_camera, GizmoSubset.PreImageEffects);
+            m_context.DrawGizmos(m_camera, GizmoSubset.PostImageEffects);
+        }
     }
 }
 #endif

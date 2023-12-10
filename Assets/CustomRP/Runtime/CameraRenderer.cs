@@ -18,6 +18,11 @@ public partial class CameraRenderer
         m_context = context;
         m_camera = camera;
 
+#if UNITY_EDITOR
+        PrepareBuffer();
+        PrepareForSceneWindow();
+#endif
+
         if (!Cull())
             return;
 
@@ -26,6 +31,7 @@ public partial class CameraRenderer
         DrawVisibleGeometry();
 #if UNITY_EDITOR
         DrawUnsupportedShaders();
+        DrawGizmos();
 #endif
         Submit();
     }
@@ -42,8 +48,15 @@ public partial class CameraRenderer
 
     private void SetUp()
     {
+        // 更新相机矩阵
         m_context.SetupCameraProperties(m_camera);
-        m_buffer.ClearRenderTarget(true, true, Color.clear);
+        // 依据相机的clearFlags来清理渲染缓冲区
+        CameraClearFlags flag = m_camera.clearFlags;
+        bool clearDepth = flag <= CameraClearFlags.Depth;
+        // SkyBox就不用清理了，最终会渲一遍天空盒，也就自动清理了
+        bool clearColor = flag == CameraClearFlags.Color;
+        Color color = clearColor ? m_camera.backgroundColor.linear : Color.clear;
+        m_buffer.ClearRenderTarget(clearDepth, clearColor, color);
         m_buffer.BeginSample(BufferName);
         ExecuteBuffer();
     }
